@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.PerformanceManageMapper">
+
+    <select id="findList" parameterType="map" resultType="map">
+        select
+            p.id, p.plan_name as planName,p.plan_edition as planEdition,p.organization_id as  organizationId,
+            o.organization_name as organizationName,
+            p.question_type as questionType,p.service_weight as serviceWeight,p.run_weight as runWeight,
+            p.assets_weight as assetsWeight,p.finance_weight as financeWeight,p.person_weight as personWeight,
+            p.create_time as createTime
+        from performance_manage p
+
+        left join hx_organization o on p.organization_id = o.id
+
+        where is_delete <![CDATA[ <> ]]> 1
+
+        <if test="planName!=null and planName!=''">
+            and plan_name=#{planName}
+        </if>
+
+        order by create_time desc
+    </select>
+
+
+    <insert id="saveOrUpdateInfo" parameterType="map">
+        replace into performance_manage(
+            id,
+            plan_name,
+            plan_edition,
+            organization_id,
+            question_type,
+            service_weight,
+            run_weight,
+            assets_weight,
+            finance_weight,
+            person_weight
+        )
+        values (
+
+            #{id},
+            #{planName},
+            #{planEdition},
+            #{organizationId},
+            #{questionType},
+            #{serviceWeight},
+            #{runWeight},
+            #{assetsWeight},
+            #{financeWeight},
+            #{personWeight}
+
+        );
+    </insert>
+
+    <insert id="deleteInfo" parameterType="map">
+        update performance_manage set is_delete=1
+
+        where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </insert>
+
+
+</mapper>

@@ -1,7 +1,7 @@
 package com.huaxin.member.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.huaxin.member.service.ManageTypeInfoService;
+import com.huaxin.member.service.HxRoleMenuService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
-/**
- * 数据字典
- */
 @RestController
-@RequestMapping("/manageTypeInfo")
-public class ManageTypeInfoController {
+@RequestMapping("/hxRoleMenu")
+public class HxRoleMenuController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    private ManageTypeInfoService manageTypeInfoService;
+    private HxRoleMenuService hxRoleMenuService;
+
 
     /**
-     * 查询数据字典
+     * 查询菜单权限
      * @param params
      * @return
      */
@@ -36,7 +35,7 @@ public class ManageTypeInfoController {
 
         Result result = new Result();
         try{
-            PageInfo list = manageTypeInfoService.findList(params);
+            PageInfo list = hxRoleMenuService.findList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -47,17 +46,18 @@ public class ManageTypeInfoController {
     }
 
 
+
     /**
-     * 新增/更新数据字典
+     * 新增/更新菜单权限
      * @param params
      * @return
      */
-    @RequestMapping(value = "/saveOrUpdateInfo", method = RequestMethod.POST)
-    public Result saveOrUpdateInfo(@RequestBody Map<String, Object> params){
+    @RequestMapping(value = "/saveOrUpdateMenu", method = RequestMethod.POST)
+    public Result saveOrUpdateMenu(@RequestBody Map<String, Object> params){
 
         Result result = new Result();
         try{
-            manageTypeInfoService.saveOrUpdateInfo(params);
+            hxRoleMenuService.saveOrUpdateMenu(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -68,16 +68,16 @@ public class ManageTypeInfoController {
 
 
     /**
-     * 删除数据字典
+     * 删除菜单权限
      * @param params
      * @return
      */
-    @RequestMapping(value = "/deleteInfo", method = RequestMethod.POST)
-    public Result deleteInfo(@RequestBody Map<String, Object> params){
+    @RequestMapping(value = "/deleteMenu", method = RequestMethod.POST)
+    public Result deleteMenu(@RequestBody Map<String, Object> params){
 
         Result result = new Result();
         try{
-            manageTypeInfoService.deleteInfo(params);
+            hxRoleMenuService.deleteMenu(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -85,7 +85,5 @@ public class ManageTypeInfoController {
         }
         return result;
     }
-
-
 
 }

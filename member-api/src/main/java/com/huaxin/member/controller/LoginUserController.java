@@ -1,9 +1,11 @@
 package com.huaxin.member.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.huaxin.member.model.LoginUser;
 import com.huaxin.member.service.LoginUserService;
 import com.huaxin.member.util.base.Result;
+import com.huaxin.member.util.base.ResultCode;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +35,52 @@ public class LoginUserController {
 
     @Value("${jwt.secret}")
     private String secret;
+
+
+    /**
+     * 查询未分配给该角色的用户
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findNotOfRoleId", method = RequestMethod.POST)
+    public Result findNotOfRoleId(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            String roleId = params.get("roleId").toString();
+            List<Map<String,Object>> list = loginUserService.findNotOfRoleId(roleId);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 查询分配给该角色的用户
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findOfRoleId", method = RequestMethod.POST)
+    public Result findOfRoleId(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            String roleId = params.get("roleId").toString();
+            List<Map<String,Object>> list = loginUserService.findOfRoleId(roleId);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
 
     /**
      * 登录

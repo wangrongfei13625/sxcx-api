@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -39,6 +40,16 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public LoginUser findByLoginName(String loginName) {
         return loginUserMapper.findByLoginName(loginName);
+    }
+
+    @Override
+    public List<Map<String,Object>> findNotOfRoleId(String roleId){
+        return loginUserMapper.findNotOfRoleId(roleId);
+    }
+
+    @Override
+    public List<Map<String,Object>> findOfRoleId(String roleId){
+        return loginUserMapper.findOfRoleId(roleId);
     }
 
 

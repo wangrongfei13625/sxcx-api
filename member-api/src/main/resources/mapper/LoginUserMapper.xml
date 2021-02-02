@@ -21,6 +21,23 @@
 		phone, address,id_card,image
 	</sql>
 
+    <select id="findNotOfRoleId" resultType="map" parameterType="jjava.lang.String">
+        select
+          id,login_name,user_name
+        from hx_user
+        where id not in (select user_id from hx_user_role where role_id =#{roleId})
+
+    </select>
+
+    <select id="findOfRoleId" resultType="map" parameterType="jjava.lang.String">
+        select
+          id,login_name,user_name
+        from hx_user
+        where id  in (select user_id from hx_user_role where role_id =#{roleId})
+
+    </select>
+
+
     <select id="login" resultMap="BaseResultMap" parameterType="java.util.Map">
         select
         <include refid="Base_Column_List" />

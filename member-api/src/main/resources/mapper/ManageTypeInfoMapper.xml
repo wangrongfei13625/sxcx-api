@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.huaxin.member.mapper.ManageTypeInfoMapper">
 
-
-
     <select id="findList" parameterType="map" resultType="map">
         select
-        id, manage_name as manageName
+          id, manage_name as manageName,manage_type manageType
         from manage_type_info
         where is_delete <![CDATA[ <> ]]> 1
 
+        <if test="manageType!=null and manageType!=''">
+            and manage_type=#{manageType}
+        </if>
 
         order by create_time desc
     </select>
@@ -19,12 +20,14 @@
         replace into manage_type_info(
         id,
         manage_name,
-        is_delete
+        manage_type
+
         )
         values (
         #{id},
         #{manageName},
-        #{isDelete}
+        #{manageType}
+
 
         );
     </insert>

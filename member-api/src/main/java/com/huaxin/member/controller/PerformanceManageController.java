@@ -1,7 +1,7 @@
 package com.huaxin.member.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.huaxin.member.service.ManageTypeInfoService;
+import com.huaxin.member.service.PerformanceManageService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -14,20 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-/**
- * 数据字典
- */
 @RestController
-@RequestMapping("/manageTypeInfo")
-public class ManageTypeInfoController {
+@RequestMapping("/performanceManage")
+public class PerformanceManageController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    private ManageTypeInfoService manageTypeInfoService;
+    private PerformanceManageService performanceManageService;
 
     /**
-     * 查询数据字典
+     * 查询绩效管理
      * @param params
      * @return
      */
@@ -36,7 +33,7 @@ public class ManageTypeInfoController {
 
         Result result = new Result();
         try{
-            PageInfo list = manageTypeInfoService.findList(params);
+            PageInfo list = performanceManageService.findList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -48,7 +45,7 @@ public class ManageTypeInfoController {
 
 
     /**
-     * 新增/更新数据字典
+     * 新增/更新绩效管理
      * @param params
      * @return
      */
@@ -57,7 +54,7 @@ public class ManageTypeInfoController {
 
         Result result = new Result();
         try{
-            manageTypeInfoService.saveOrUpdateInfo(params);
+            performanceManageService.saveOrUpdateInfo(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -68,7 +65,7 @@ public class ManageTypeInfoController {
 
 
     /**
-     * 删除数据字典
+     * 删除绩效管理
      * @param params
      * @return
      */
@@ -77,7 +74,7 @@ public class ManageTypeInfoController {
 
         Result result = new Result();
         try{
-            manageTypeInfoService.deleteInfo(params);
+            performanceManageService.deleteInfo(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -85,6 +82,7 @@ public class ManageTypeInfoController {
         }
         return result;
     }
+
 
 
 
