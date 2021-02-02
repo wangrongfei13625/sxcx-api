@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxRole">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="organization_id" property="organizationId" jdbcType="INTEGER" />
+        <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="role_flag_id" property="roleFlagId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List">
+		id, organization_id, role_name, remark, role_flag_id, create_time
+	</sql>
+
+    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from hx_role
+        where 1=1
+        <if test="roleName!=null and roleName!=''">
+            and role_name  like concat('%',#{roleName},'%')
+        </if>
+
+        order by role_flag_id
+    </select>
+
+
+    <insert id="saveOrUpdateRole" parameterType="map">
+        replace into hx_role(
+        id,
+        organization_id,
+        role_name,
+        remark,
+        role_flag_id
+        )
+        values (
+        #{id},
+        #{organizationId},
+        #{roleName},
+        #{remark},
+        #{roleFlagId}
+        );
+    </insert>
+
+    <delete id="deleteRole" parameterType="map">
+        delete from hx_role where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+</mapper>

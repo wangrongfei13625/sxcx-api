@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.RationAnswerInfoMapper">
+
+    <select id="findList" parameterType="java.lang.String" resultType="map">
+        select
+          id,answer,ration_id as rationId
+        from ration_answer_info
+
+        where ration_id = #{rationId}
+
+        order by create_time desc
+    </select>
+
+
+
+
+
+    <insert id="saveOrUpdateAnswer" parameterType="map">
+        replace into ration_answer_info(
+            id,
+            answer,
+            ration_id
+        )
+        values (
+        #{id},
+        #{answer},
+        #{rationId}
+
+
+        );
+    </insert>
+
+
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.BaseUserMapper">
+
+    <select id="findByUser" parameterType="map" resultType="map">
+        select
+            id,
+            login_name,
+            user_name,
+            login_password,
+            organization_id,
+            DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') create_time
+        from hx_user
+        where 1=1
+         <if test="userName!=null and userName!=''">
+             and p.name  like concat('%',#{userName},'%')
+         </if>
+        <if test="userId!=null and userId!=''">
+            and p.id =#{userId}
+        </if>
+        <if test="orgId!=null and orgId!=''">
+            and d.id =#{orgId}
+        </if>
+        order by id desc
+    </select>
+
+
+
+</mapper>

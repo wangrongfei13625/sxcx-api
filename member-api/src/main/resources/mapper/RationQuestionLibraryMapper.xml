@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.RationQuestionLibraryMapper">
+
+    <select id="findList" parameterType="map" resultType="map">
+        select
+        q.id, q.title,
+        q.questionnaire_type as questionnaireType,q.answer,
+        q.confidence_level as confidenceLevel,q.edition
+        from ration_question_library q
+
+        where q.is_delete <![CDATA[ <> ]]> 1
+
+        <if test="edition!=null and edition!=''">
+            and q.edition = #{edition}
+        </if>
+
+
+        order by q.create_time desc
+    </select>
+
+
+
+
+
+    <insert id="saveOrUpdateLibrary" parameterType="map">
+        replace into ration_question_library(
+            id,
+            title,
+            questionnaire_type,
+            confidence_level,
+            edition
+        )
+        values (
+        #{id},
+        #{title},
+        #{questionnaireType},
+        #{confidenceLevel},
+        #{edition}
+
+        );
+    </insert>
+
+    <insert id="saveRation" parameterType="map" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into ration_question_library(
+            id,
+            title,
+            questionnaire_type,
+            confidence_level,
+            edition
+        )
+        values (
+        #{id},
+        #{title},
+        #{questionnaireType},
+        #{confidenceLevel},
+        #{edition}
+
+        );
+    </insert>
+
+
+    <insert id="deleteLibrary" parameterType="map">
+        update ration_question_library set is_delete=1
+
+        where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </insert>
+
+</mapper>

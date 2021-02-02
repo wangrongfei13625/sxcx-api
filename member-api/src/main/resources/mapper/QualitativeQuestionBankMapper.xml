@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.QualitativeQuestionLibraryMapper">
+
+    <select id="findList" parameterType="map" resultType="map">
+        select
+            q.id, q.title,q.manage_type as manageId,m.manage_name as manageName,
+            q.questionnaire_type as questionnaireType,q.answer,
+            q.confidence_level as confidenceLevel,q.edition
+        from qualitative_question_library q
+
+        left join manage_type_info m on q.type=m.id
+
+        where q.is_delete <![CDATA[ <> ]]> 1
+
+        <if test="edition!=null and edition!=''">
+            and q.edition = #{edition}
+        </if>
+
+
+        order by q.create_time desc
+    </select>
+
+
+    <insert id="saveOrUpdateLibrary" parameterType="map">
+        replace into qualitative_question_library(
+        id,
+        title,
+        manage_type,
+        questionnaire_type,
+        answer,
+        confidence_level,
+        edition
+
+        )
+        values (
+        #{id},
+        #{title},
+        #{manageId},
+        #{questionnaireType},
+        #{answer},
+        #{confidenceLevel},
+        #{edition}
+
+        );
+    </insert>
+
+    <insert id="deleteLibrary" parameterType="map">
+        update qualitative_question_library set is_delete=1
+
+        where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </insert>
+
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.HxUserRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxUserRole">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="role_id" property="roleId" jdbcType="INTEGER" />
+        <result column="organization_id" property="organizationId" jdbcType="INTEGER" />
+
+    </resultMap>
+    <sql id="Base_Column_List">
+		id, user_id, role_id, organization_id
+	</sql>
+
+    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from hx_user_role
+        where is_delete <![CDATA[ <> ]]> 1
+        <if test="roleId!=null and roleId!=''">
+            and role_id=#{roleId}
+        </if>
+        <if test="organizationId!=null and organizationId!=''">
+            and organization_id=#{organizationId}
+        </if>
+        <if test="userId!=null and userId!=''">
+            and user_id=#{userId}
+        </if>
+
+    </select>
+
+
+    <insert id="saveOrUpdateUserRole" parameterType="map">
+        replace into hx_user_role(
+        id,
+        user_id,
+        role_id,
+        organization_id
+
+        )
+        values (
+        #{id},
+        #{userId},
+        #{roleId},
+        #{organizationId}
+        );
+    </insert>
+
+    <insert id="deleteUserRole" parameterType="map">
+        update hx_user_role set is_delete=1  where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </insert>
+
+</mapper>
