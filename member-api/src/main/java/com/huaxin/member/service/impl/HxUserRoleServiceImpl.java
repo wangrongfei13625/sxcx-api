@@ -7,6 +7,8 @@ import com.huaxin.member.service.HxUserRoleService;
 import com.huaxin.member.util.PageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,16 @@ public class HxUserRoleServiceImpl implements HxUserRoleService {
         hxUserRoleMapper.saveOrUpdateUserRole(params);
     }
 
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saveUserRole(List<HxUserRole> params) {
+        //删除角色关系 根据RoleId
+        HxUserRole hxUserRole = params.get(0);
+        hxUserRoleMapper.deleteOfRoleId(hxUserRole.getRoleId().toString());
+
+        hxUserRoleMapper.saveUserRole(params);
+    }
     @Override
     public void deleteUserRole(Map<String,Object> params){
         if(params.get("ids")!=null && params.get("ids")!=""){

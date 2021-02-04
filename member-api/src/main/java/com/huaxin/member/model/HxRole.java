@@ -11,11 +11,15 @@ public class HxRole implements Serializable {
 
     private Integer organizationId;
 
+    private String organizationName;
+
     private String roleName;
 
     private String remark;
 
     private Integer roleFlagId;
+
+    private String userName;
 
     private Date createTime;
 
@@ -65,5 +69,21 @@ public class HxRole implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

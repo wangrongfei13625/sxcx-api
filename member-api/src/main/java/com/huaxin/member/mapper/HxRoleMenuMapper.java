@@ -13,4 +13,9 @@ public interface HxRoleMenuMapper {
 
     void deleteMenu(Map<String, Object> params);
 
+    void deleteRoleMenuOfRoleId(String roleId);
+
+    void saveRoleMenu(List<HxRoleMenu> params);
+
+
 }

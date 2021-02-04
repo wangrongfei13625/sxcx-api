@@ -1,6 +1,7 @@
 package com.huaxin.member.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.huaxin.member.model.HxRoleMenu;
 import com.huaxin.member.service.HxRoleMenuService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
@@ -35,7 +36,7 @@ public class HxRoleMenuController {
 
         Result result = new Result();
         try{
-            PageInfo list = hxRoleMenuService.findList(params);
+            List<HxRoleMenu> list = hxRoleMenuService.findList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -45,6 +46,25 @@ public class HxRoleMenuController {
         return result;
     }
 
+
+    /**
+     * 修改菜单权限
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/saveRoleMenu", method = RequestMethod.POST)
+    public Result saveRoleMenu(@RequestBody List<HxRoleMenu> params){
+
+        Result result = new Result();
+        try{
+            hxRoleMenuService.saveRoleMenu(params);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
 
 
     /**

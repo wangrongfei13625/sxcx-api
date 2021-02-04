@@ -3,13 +3,17 @@ package com.huaxin.member.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.huaxin.member.mapper.RationAnswerInfoMapper;
 import com.huaxin.member.mapper.RationQuestionLibraryMapper;
+import com.huaxin.member.model.RationAnswerInfo;
 import com.huaxin.member.model.RationQuestionLibrary;
 import com.huaxin.member.service.RationQuestionLibraryService;
 import com.huaxin.member.util.PageUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,15 +42,48 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
     }
 
     @Override
-    public void saveOrUpdateLibrary(Map<String,Object> params){
+    public  List<Map<String,Object>> findQuestion(Map<String,Object> params){
+        if(params.get("manageIds")!=null && params.get("manageIds")!=""){
+            String manageIds =params.get("manageIds").toString();
+            String[] manageId = manageIds.split(",");
+            params.put("manageIds",manageId);
+        }
+        List<Map<String,Object>> list = rationQuestionLibraryMapper.findList(params);
+        for(Map<String,Object> map:list){
+            String rationId = map.get("id").toString();
+            List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
+            map.put("answer",answer);
 
-        rationQuestionLibraryMapper.saveOrUpdateLibrary(params);
+        }
+
+        return list;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void saveOrUpdateLibrary(Map<String,Object> params){
+        RationQuestionLibrary ration = new RationQuestionLibrary();
+
+        ration.setTitle(params.get("title").toString());
+        ration.setManageId(params.get("manageId").toString());
+        ration.setConfidenceLevel(params.get("confidenceLevel").toString());
+        ration.setEdition(params.get("edition").toString());
+        rationQuestionLibraryMapper.saveRation(ration);
 
         List<Map<String,Object>> list = (List<Map<String, Object>>) params.get("answer");
 
+        List<RationAnswerInfo> infoList = new ArrayList<>();
+
         for(Map<String,Object> map : list){
-            rationAnswerInfoMapper.saveOrUpdateAnswer(map);
+
+            RationAnswerInfo rationAnswerInfo = new RationAnswerInfo();
+            rationAnswerInfo.setAnswer(map.get("answer").toString());
+            rationAnswerInfo.setRemark(map.get("remark").toString());
+            rationAnswerInfo.setRationId(ration.getId());
+            infoList.add(rationAnswerInfo);
+
         }
+        rationAnswerInfoMapper.saveAnswer(infoList);
 
     }
 
@@ -64,6 +101,7 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
      * 复制版本数据
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public void copyRation(Map<String,Object> params){
 
         //根据版本号 查询所有定量题库数据
@@ -72,14 +110,26 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
             String rationId = map.get("id").toString();
             List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
             //更改版本号，将数据存入ration,将ID 改为null 进行重新存入
-            map.put("id",null);
-            map.put("edition",params.get("edition"));
-            RationQuestionLibrary rationQuestionLibrary = rationQuestionLibraryMapper.saveRation(map);
+            RationQuestionLibrary ration = new RationQuestionLibrary();
+            ration.setTitle(map.get("title").toString());
+            ration.setManageId(map.get("manageId").toString());
+            ration.setConfidenceLevel(map.get("confidenceLevel").toString());
+            ration.setEdition(params.get("updateEdition").toString());
+            rationQuestionLibraryMapper.saveRation(ration);
+
             // 将答案复制
-            for(Map<String,Object> answerMap : answer){
-                answerMap.put("rationId",rationQuestionLibrary.getId());
-                rationAnswerInfoMapper.saveOrUpdateAnswer(answerMap);
+            List<RationAnswerInfo> infoList = new ArrayList<>();
+
+            for(Map<String,Object> maps : answer){
+
+                RationAnswerInfo rationAnswerInfo = new RationAnswerInfo();
+                rationAnswerInfo.setAnswer(maps.get("answer").toString());
+                rationAnswerInfo.setRemark(maps.get("remark").toString());
+                rationAnswerInfo.setRationId(ration.getId());
+                infoList.add(rationAnswerInfo);
+
             }
+            rationAnswerInfoMapper.saveAnswer(infoList);
 
         }
 

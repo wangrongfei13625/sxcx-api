@@ -1,8 +1,11 @@
 package com.huaxin.member.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.huaxin.member.mapper.LoginUserMapper;
+
 import com.huaxin.member.model.LoginUser;
 import com.huaxin.member.service.LoginUserService;
+import com.huaxin.member.util.PageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +55,27 @@ public class LoginUserServiceImpl implements LoginUserService {
         return loginUserMapper.findOfRoleId(roleId);
     }
 
+    @Override
+    public PageInfo findList(Map<String,Object> params){
+        PageUtils.initPage(params);
+        List<LoginUser> list = loginUserMapper.findList(params);
+
+        return new PageInfo(list);
+    }
+
+    @Override
+    public void updateUser(Map<String,Object> params){
+        loginUserMapper.updateUser(params);
+    }
+
+    @Override
+    public void deleteUser(Map<String,Object> params){
+        if(params.get("ids")!=null && params.get("ids")!=""){
+            String ids =params.get("ids").toString();
+            String[] id = ids.split(",");
+            params.put("ids",id);
+        }
+        loginUserMapper.deleteUser(params);
+    }
 
 }

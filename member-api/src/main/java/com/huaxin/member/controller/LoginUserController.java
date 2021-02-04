@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+
 
 @RestController
 @RequestMapping("/login")
@@ -72,6 +72,66 @@ public class LoginUserController {
             String roleId = params.get("roleId").toString();
             List<Map<String,Object>> list = loginUserService.findOfRoleId(roleId);
             result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findList", method = RequestMethod.POST)
+    public Result findList(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            PageInfo list = loginUserService.findList(params);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 新增/更新用户
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    public Result updateUser(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            loginUserService.updateUser(params);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 删除用户
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public Result deleteUser(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            loginUserService.deleteUser(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);

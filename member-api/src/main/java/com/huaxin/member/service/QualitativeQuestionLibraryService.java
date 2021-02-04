@@ -9,6 +9,8 @@ public interface QualitativeQuestionLibraryService {
 
     PageInfo findList(Map<String,Object> params);
 
+    List<Map<String,Object>> findQuestion(Map<String,Object> params);
+
     void saveOrUpdateLibrary(Map<String,Object> params);
 
     void deleteLibrary(Map<String,Object> params);

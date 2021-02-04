@@ -1,5 +1,6 @@
 package com.huaxin.member.service;
 
+import com.github.pagehelper.PageInfo;
 import com.huaxin.member.model.LoginUser;
 
 import java.util.List;
@@ -14,5 +15,11 @@ public interface LoginUserService {
     List<Map<String,Object>> findNotOfRoleId(String roleId);
 
     List<Map<String,Object>> findOfRoleId(String roleId);
+
+    PageInfo findList(Map<String, Object> params);
+
+    void updateUser(Map<String, Object> params);
+
+    void deleteUser(Map<String, Object> params);
 
 }

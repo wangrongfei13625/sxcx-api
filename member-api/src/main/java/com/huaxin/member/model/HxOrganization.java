@@ -11,9 +11,11 @@ public class HxOrganization implements Serializable {
 
     private String organizationName;
 
+    private String address;
+
     private String telPhone;
 
-    private String describe;
+    private String remarks;
 
     private String contacts;
 
@@ -50,12 +52,12 @@ public class HxOrganization implements Serializable {
         this.telPhone = telPhone;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getRemarks() {
+        return remarks;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 
     public String getContacts() {
@@ -96,5 +98,13 @@ public class HxOrganization implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

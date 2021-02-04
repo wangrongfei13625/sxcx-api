@@ -45,7 +45,7 @@
         id,
         role_id,
         menu_id,
-        create_by,
+        create_by
         )
         values (
         #{id},
@@ -53,6 +53,26 @@
         #{menuId},
         #{createBy}
         );
+    </insert>
+
+    <insert id="saveRoleMenu" parameterType="java.util.List">
+        insert into hx_role_menu
+        (
+            id,
+            role_id,
+            menu_id,
+            create_by
+        )
+        values
+        <foreach collection="list" item="hxRoleMenu" index="index" separator=",">
+            (
+                #{hxRoleMenu.id},
+                #{hxRoleMenu.roleId},
+                #{hxRoleMenu.menuId},
+                #{hxRoleMenu.createBy}
+            )
+        </foreach>
+
     </insert>
 
     <delete id="deleteMenu" parameterType="map">
@@ -63,6 +83,11 @@
                 #{id}
             </foreach>
         </if>
+    </delete>
+
+
+    <delete id="deleteRoleMenuOfRoleId" parameterType="java.lang.String">
+        delete from  hx_role_menu  where role_id= #{roleId}
     </delete>
 
 </mapper>

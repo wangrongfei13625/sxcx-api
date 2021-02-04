@@ -5,6 +5,8 @@
     <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxRole">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="organization_id" property="organizationId" jdbcType="INTEGER" />
+        <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="role_name" property="roleName" jdbcType="VARCHAR" />
         <result column="remark" property="remark" jdbcType="VARCHAR" />
         <result column="role_flag_id" property="roleFlagId" jdbcType="INTEGER" />
@@ -16,14 +18,21 @@
 
     <select id="findList" parameterType="map" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
-        from hx_role
-        where 1=1
+        h.id, h.organization_id, o.organization_name ,h.role_name, h.remark, h.role_flag_id, h.create_time,
+        GROUP_CONCAT( u.user_name SEPARATOR ',' ) AS user_name
+        from hx_role h
+        left join  hx_organization o on h.organization_id = o.id
+        left join hx_user_role ur on h.id = ur.role_id
+        left join hx_user u on ur.user_id=u.id
+
+        where h.is_delete  <![CDATA[ <> ]]> 1
         <if test="roleName!=null and roleName!=''">
-            and role_name  like concat('%',#{roleName},'%')
+            and h.role_name  like concat('%',#{roleName},'%')
         </if>
 
-        order by role_flag_id
+        group by h.id
+
+        order by h.role_flag_id
     </select>
 
 
@@ -44,14 +53,14 @@
         );
     </insert>
 
-    <delete id="deleteRole" parameterType="map">
-        delete from hx_role where 1=1
+    <update id="deleteRole" parameterType="map">
+        update hx_role set is_delete=1  where 1=1
         <if test="ids!='' and ids!=null">
             and id  in
             <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
         </if>
-    </delete>
+    </update>
 
 </mapper>

@@ -2,6 +2,7 @@ package com.huaxin.member.service;
 
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public interface RationQuestionLibraryService {
@@ -13,5 +14,8 @@ public interface RationQuestionLibraryService {
     void deleteLibrary(Map<String,Object> params);
 
     void copyRation(Map<String,Object> params);
+
+    List<Map<String,Object>> findQuestion(Map<String,Object> params);
+
 
 }

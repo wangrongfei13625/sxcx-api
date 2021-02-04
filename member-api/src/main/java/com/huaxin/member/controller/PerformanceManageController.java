@@ -2,6 +2,8 @@ package com.huaxin.member.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.huaxin.member.service.PerformanceManageService;
+import com.huaxin.member.service.QualitativeQuestionLibraryService;
+import com.huaxin.member.service.RationQuestionLibraryService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +25,12 @@ public class PerformanceManageController {
 
     @Autowired
     private PerformanceManageService performanceManageService;
+
+    @Autowired
+    private QualitativeQuestionLibraryService questionLibraryService;
+
+    @Autowired
+    private RationQuestionLibraryService rationQuestionLibraryService;
 
     /**
      * 查询绩效管理
@@ -34,6 +43,47 @@ public class PerformanceManageController {
         Result result = new Result();
         try{
             PageInfo list = performanceManageService.findList(params);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 查看定性评估
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findQualitativeQuestion", method = RequestMethod.POST)
+    public Result findQualitativeQuestion(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            List<Map<String,Object>> list = questionLibraryService.findQuestion(params);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 查看定量评估
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findRationQuestion", method = RequestMethod.POST)
+    public Result findRationQuestion(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            List<Map<String,Object>> list = rationQuestionLibraryService.findQuestion(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -82,8 +132,5 @@ public class PerformanceManageController {
         }
         return result;
     }
-
-
-
 
 }

@@ -2,9 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.huaxin.member.mapper.RationAnswerInfoMapper">
 
+    <resultMap id="BaseResultMap" type="com.huaxin.member.model.RationAnswerInfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="answer" property="answer" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="rationId" property="rationId" jdbcType="INTEGER" />
+
+    </resultMap>
+
     <select id="findList" parameterType="java.lang.String" resultType="map">
         select
-          id,answer,ration_id as rationId
+          id,answer,ration_id as rationId,remark
         from ration_answer_info
 
         where ration_id = #{rationId}
@@ -20,15 +28,35 @@
         replace into ration_answer_info(
             id,
             answer,
+            remark,
             ration_id
         )
         values (
         #{id},
         #{answer},
+        #{remark},
         #{rationId}
-
-
         );
+    </insert>
+
+
+    <insert id="saveAnswer" parameterType="java.util.List">
+        insert into ration_answer_info(
+            id,
+            answer,
+            remark,
+            ration_id
+        )
+        values
+        <foreach collection="list" item="rationAnswerInfo" index="index" separator=",">
+            (
+            #{rationAnswerInfo.id},
+            #{rationAnswerInfo.answer},
+            #{rationAnswerInfo.remark},
+            #{rationAnswerInfo.rationId}
+            )
+        </foreach>
+
     </insert>
 
 

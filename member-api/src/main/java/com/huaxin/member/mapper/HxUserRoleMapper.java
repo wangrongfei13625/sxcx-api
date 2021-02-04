@@ -14,6 +14,10 @@ public interface HxUserRoleMapper {
 
     void deleteUserRole(Map<String, Object> params);
 
+    void saveUserRole(List<HxUserRole> params);
+
+    void deleteOfRoleId(String roleId);
+
 
 
 }

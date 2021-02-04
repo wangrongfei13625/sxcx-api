@@ -8,6 +8,7 @@
         <result column="login_name" property="loginName" jdbcType="VARCHAR" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
+        <result column="image" property="image" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="sex" property="sex" jdbcType="VARCHAR" />
         <result column="phone" property="phone" jdbcType="VARCHAR" />
@@ -21,7 +22,7 @@
 		phone, address,id_card,image
 	</sql>
 
-    <select id="findNotOfRoleId" resultType="map" parameterType="jjava.lang.String">
+    <select id="findNotOfRoleId" resultType="map" parameterType="java.lang.String">
         select
           id,login_name,user_name
         from hx_user
@@ -29,7 +30,7 @@
 
     </select>
 
-    <select id="findOfRoleId" resultType="map" parameterType="jjava.lang.String">
+    <select id="findOfRoleId" resultType="map" parameterType="java.lang.String">
         select
           id,login_name,user_name
         from hx_user
@@ -53,6 +54,63 @@
         from hx_user
         where login_name = #{loginName,jdbcType=VARCHAR}
     </select>
+
+
+    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from hx_user
+        where is_delete <![CDATA[ <> ]]> 1
+        <if test="userName!=null and userName!=''">
+            and user_name  like concat('%',#{userName},'%')
+        </if>
+
+        order by create_time
+    </select>
+
+    <update id="updateUser" parameterType="map">
+        update hx_user set
+        <if test="userName!=null">
+            user_name = #{userName},
+        </if>
+        <if test="image!=null">
+            image = #{image},
+        </if>
+
+        <if test="address!=null">
+            address = #{address},
+        </if>
+
+        <if test="sex!=null">
+            sex = #{sex},
+        </if>
+
+        <if test="phone!=null">
+            phone = #{phone},
+        </if>
+
+        <if test="loginPassword!=null">
+            login_password = #{loginPassword},
+        </if>
+
+        create_time = now()
+
+        where login_name = #{loginName}
+
+
+    </update>
+
+    <update id="deleteUser" parameterType="map">
+        update hx_user set is_delete=1  where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </update>
+
+
 
 </mapper>
 

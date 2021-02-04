@@ -47,7 +47,25 @@
         );
     </insert>
 
-    <insert id="deleteUserRole" parameterType="map">
+    <insert id="saveUserRole" parameterType="java.util.List">
+        insert into hx_user_role
+        (
+        id,
+        user_id,
+        role_id
+        )
+        values
+        <foreach collection="list" item="hxUserRole" index="index" separator=",">
+            (
+            #{hxUserRole.id},
+            #{hxUserRole.userId},
+            #{hxUserRole.roleId}
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="deleteUserRole" parameterType="map">
         update hx_user_role set is_delete=1  where 1=1
         <if test="ids!='' and ids!=null">
             and id  in
@@ -55,6 +73,11 @@
                 #{id}
             </foreach>
         </if>
-    </insert>
+    </update>
+
+    <delete id="deleteOfRoleId" parameterType="map">
+        delete from  hx_user_role   where role_id=#{roleId}
+
+    </delete>
 
 </mapper>

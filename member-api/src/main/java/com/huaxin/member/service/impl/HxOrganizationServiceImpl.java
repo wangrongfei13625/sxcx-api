@@ -31,7 +31,7 @@ public class HxOrganizationServiceImpl implements HxOrganizationService {
 
     @Override
     public  List<Map<String,Object>> findTree(Map<String,Object> params){
-        PageUtils.initPage(params);
+        //PageUtils.initPage(params);
         List<HxOrganization> hxOrganizations = hxOrganizationMapper.findList(params);
         List<Map<String,Object>> list = new ArrayList<>();
         for(HxOrganization hxOrganization:hxOrganizations){
@@ -39,7 +39,7 @@ public class HxOrganizationServiceImpl implements HxOrganizationService {
             map.put("id",hxOrganization.getId());
             map.put("organizationName",hxOrganization.getOrganizationName()==null?"":hxOrganization.getOrganizationName());
             map.put("telPhone",hxOrganization.getTelPhone()==null?"":hxOrganization.getTelPhone());
-            map.put("describe",hxOrganization.getDescribe()==null?"":hxOrganization.getDescribe());
+            map.put("remarks",hxOrganization.getRemarks()==null?"":hxOrganization.getRemarks());
             map.put("contacts",hxOrganization.getContacts()==null?"":hxOrganization.getContacts());
             map.put("organizationType",hxOrganization.getOrganizationType()==null?"":hxOrganization.getOrganizationType());
             map.put("organizationNum",hxOrganization.getOrganizationNum()==null?"":hxOrganization.getParentId());

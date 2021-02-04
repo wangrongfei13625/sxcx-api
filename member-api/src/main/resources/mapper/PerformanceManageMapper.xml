@@ -6,20 +6,20 @@
         select
             p.id, p.plan_name as planName,p.plan_edition as planEdition,p.organization_id as  organizationId,
             o.organization_name as organizationName,
-            p.question_type as questionType,p.service_weight as serviceWeight,p.run_weight as runWeight,
+            p.question_type as manageId,p.service_weight as serviceWeight,p.run_weight as runWeight,
             p.assets_weight as assetsWeight,p.finance_weight as financeWeight,p.person_weight as personWeight,
             p.create_time as createTime
         from performance_manage p
 
         left join hx_organization o on p.organization_id = o.id
 
-        where is_delete <![CDATA[ <> ]]> 1
+        where p.is_delete <![CDATA[ <> ]]> 1
 
         <if test="planName!=null and planName!=''">
-            and plan_name=#{planName}
+            and p.plan_name  like concat('%',#{planName},'%')
         </if>
 
-        order by create_time desc
+        order by p.create_time desc
     </select>
 
 
@@ -42,7 +42,7 @@
             #{planName},
             #{planEdition},
             #{organizationId},
-            #{questionType},
+            #{manageId},
             #{serviceWeight},
             #{runWeight},
             #{assetsWeight},
@@ -52,7 +52,7 @@
         );
     </insert>
 
-    <insert id="deleteInfo" parameterType="map">
+    <update id="deleteInfo" parameterType="map">
         update performance_manage set is_delete=1
 
         where 1=1
@@ -62,7 +62,7 @@
                 #{id}
             </foreach>
         </if>
-    </insert>
+    </update>
 
 
 </mapper>

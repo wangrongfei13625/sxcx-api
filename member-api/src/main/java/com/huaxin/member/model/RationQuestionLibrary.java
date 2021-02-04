@@ -11,7 +11,7 @@ public class RationQuestionLibrary implements Serializable {
 
     private String title;
 
-    private String questionnaireType;
+    private String manageId;
 
     private String confidenceLevel;
 
@@ -36,12 +36,12 @@ public class RationQuestionLibrary implements Serializable {
         this.title = title;
     }
 
-    public String getQuestionnaireType() {
-        return questionnaireType;
+    public String getManageId() {
+        return manageId;
     }
 
-    public void setQuestionnaireType(String questionnaireType) {
-        this.questionnaireType = questionnaireType;
+    public void setManageId(String manageId) {
+        this.manageId = manageId;
     }
 
     public String getConfidenceLevel() {

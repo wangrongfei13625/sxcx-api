@@ -1,6 +1,7 @@
 package com.huaxin.member.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.huaxin.member.model.HxUserRole;
 import com.huaxin.member.service.HxUserRoleService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -36,6 +38,25 @@ public class HxUserRoleController {
         try{
             PageInfo list = hxUserRoleService.findList(params);
             result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 修改用户绑定关系
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/saveUserRole", method = RequestMethod.POST)
+    public Result saveUserRole(@RequestBody List<HxUserRole> params){
+
+        Result result = new Result();
+        try{
+            hxUserRoleService.saveUserRole(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);

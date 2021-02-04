@@ -5,8 +5,9 @@
     <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxOrganization">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+        <result column="organization_address" property="address" jdbcType="VARCHAR" />
         <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" />
-        <result column="describe" property="describe" jdbcType="VARCHAR" />
+        <result column="remarks" property="remarks" jdbcType="VARCHAR" />
         <result column="contacts" property="contacts" jdbcType="VARCHAR" />
         <result column="organization_type" property="organizationType" jdbcType="VARCHAR" />
         <result column="organization_num" property="organizationNum" jdbcType="VARCHAR" />
@@ -15,19 +16,25 @@
 
     </resultMap>
     <sql id="Base_Column_List">
-		id, organization_name, tel_phone,describe,organization_type, organization_num, parent_id, create_time
+		h.id, h.organization_name, h.tel_phone,h.contacts,h.remarks,h.organization_type, h.organization_num, h.parent_id, h.create_time
 	</sql>
 
     <select id="findList" parameterType="map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from hx_organization
-        where is_delete <![CDATA[ <> ]]> 1
+        from hx_organization h
+
+        where h.is_delete <![CDATA[ <> ]]> 1
+
         <if test="organizationName!=null and organizationName!=''">
-            and organization_name  like concat('%',#{organizationName},'%')
+            and h.organization_name  like concat('%',#{organizationName},'%')
         </if>
 
-        order by create_time desc
+        <if test="id!=null and id!=''">
+            and h.id =#{id}
+        </if>
+
+        order by h.create_time desc
     </select>
 
 
@@ -35,33 +42,35 @@
         replace into hx_organization(
             id,
             organization_name,
+            organization_address,
             tel_phone,
-            describe,
+            remarks,
             contacts,
             organization_type,
             organization_num,
             parent_id
         )
         values (
-        #{id},
-        #{organizationName},
-        #{telPhone},
-        #{describe},
-        #{contacts},
-        #{organizationType},
-        #{organizationNum},
-        #{parentId}
+            #{id},
+            #{organizationName},
+            #{address},
+            #{telPhone},
+            #{remarks},
+            #{contacts},
+            #{organizationType},
+            #{organizationNum},
+            #{parentId}
         );
     </insert>
 
-    <delete id="deleteOrgId" parameterType="map">
-        delete from hx_organization where 1=1
+    <update id="deleteOrgId" parameterType="map">
+        update  hx_organization set is_delete =1 where 1=1
         <if test="ids!='' and ids!=null">
             and id  in
             <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
                 #{id}
             </foreach>
         </if>
-    </delete>
+    </update>
 
 </mapper>

@@ -13,6 +13,6 @@ public interface RationQuestionLibraryMapper {
 
     void deleteLibrary(Map<String,Object> params);
 
-    RationQuestionLibrary saveRation(Map<String,Object> params);
+    void saveRation(RationQuestionLibrary ration);
 
 }
