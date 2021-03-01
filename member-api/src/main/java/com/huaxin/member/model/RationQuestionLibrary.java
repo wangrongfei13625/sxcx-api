@@ -13,7 +13,13 @@ public class RationQuestionLibrary implements Serializable {
 
     private String manageId;
 
-    private String confidenceLevel;
+    private String rationType;
+
+    private String rationRemark;
+
+    private String rationData;
+
+    private String rationCode;
 
     private String edition;
 
@@ -44,12 +50,36 @@ public class RationQuestionLibrary implements Serializable {
         this.manageId = manageId;
     }
 
-    public String getConfidenceLevel() {
-        return confidenceLevel;
+    public String getRationType() {
+        return rationType;
     }
 
-    public void setConfidenceLevel(String confidenceLevel) {
-        this.confidenceLevel = confidenceLevel;
+    public void setRationType(String rationType) {
+        this.rationType = rationType;
+    }
+
+    public String getRationRemark() {
+        return rationRemark;
+    }
+
+    public void setRationRemark(String rationRemark) {
+        this.rationRemark = rationRemark;
+    }
+
+    public String getRationData() {
+        return rationData;
+    }
+
+    public void setRationData(String rationData) {
+        this.rationData = rationData;
+    }
+
+    public String getRationCode() {
+        return rationCode;
+    }
+
+    public void setRationCode(String rationCode) {
+        this.rationCode = rationCode;
     }
 
     public String getEdition() {

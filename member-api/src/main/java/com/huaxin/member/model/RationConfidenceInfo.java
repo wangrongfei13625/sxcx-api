@@ -2,15 +2,15 @@ package com.huaxin.member.model;
 
 import java.io.Serializable;
 
-public class RationAnswerInfo implements Serializable {
+public class RationConfidenceInfo implements Serializable {
 
     private static final long serialVersionUID = 6749900880183323588L;
 
     private Integer id;
 
-    private String answer;
+    private String title;
 
-    private String remark;
+    private String fraction;
 
     private Integer rationId;
 
@@ -22,20 +22,20 @@ public class RationAnswerInfo implements Serializable {
         this.id = id;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getFraction() {
+        return fraction;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setFraction(String fraction) {
+        this.fraction = fraction;
     }
 
     public Integer getRationId() {

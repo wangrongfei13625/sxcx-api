@@ -13,4 +13,6 @@ public interface PerformanceManageService {
 
     void deleteInfo(Map<String,Object> params);
 
+    void updateRelease(Map<String,Object> params);
+
 }

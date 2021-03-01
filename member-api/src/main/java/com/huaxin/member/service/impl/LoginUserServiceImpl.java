@@ -35,7 +35,7 @@ public class LoginUserServiceImpl implements LoginUserService {
         logger.info("登录.....");
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("login_name", username);
-        map.put("login_passwd", pwd);
+        map.put("login_passwd", "");
         LoginUser user = loginUserMapper.login(map);
         return user;
     }
@@ -46,8 +46,8 @@ public class LoginUserServiceImpl implements LoginUserService {
     }
 
     @Override
-    public List<Map<String,Object>> findNotOfRoleId(String roleId){
-        return loginUserMapper.findNotOfRoleId(roleId);
+    public List<Map<String,Object>> findNotOfRoleId(Map<String, Object> params){
+        return loginUserMapper.findNotOfRoleId(params);
     }
 
     @Override
@@ -66,6 +66,11 @@ public class LoginUserServiceImpl implements LoginUserService {
     @Override
     public void updateUser(Map<String,Object> params){
         loginUserMapper.updateUser(params);
+    }
+
+    @Override
+    public void saveHxUser(Map<String,Object> params){
+        loginUserMapper.saveHxUser(params);
     }
 
     @Override

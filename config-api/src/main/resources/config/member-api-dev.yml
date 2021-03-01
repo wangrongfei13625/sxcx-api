@@ -38,13 +38,13 @@ fdfs:
   conf: ./fdfs_client.conf
   soTimeout: 1501
   connectTimeout: 601
-  thumbImage:
+  thumbImage: #缩略图
     width: 150
     height: 150
   trackerList:
     - 192.168.0.30:22122
 http:
-  uploadIp : //192.168.0.30
+  uploadIp : http://192.168.0.30:8888
 
 temp_upload_url: ./upload
 
@@ -75,3 +75,15 @@ file :
   contractUrlPath: /upload/xz
   imagePath: /usr/local/attachment/xz/image
   attachmentPath: /usr/local/attachment/xz/attachment
+
+
+ftp:
+  host: 192.168.2.124 # linux服务器IP
+  port: 22
+  username: root
+  password: huaxin12
+  baseUrl: /home/application/sczc
+  uploadDir: /upload #nginx 映射路径
+  nginxUrl: http://27.17.43.146:48899 # 前端访问连接  外网nginx 映射地址
+
+

@@ -51,6 +51,30 @@ public class HxMenuServiceImpl implements HxMenuService {
         return util.treeNodeList(list);
     }
 
+
+    @Override
+    public  List<Map<String,Object>> findTreeOfLoginName(Map<String,Object> params){
+        PageUtils.initPage(params);
+        List<HxMenu> hxMenus = hxMenuMapper.findTreeOfLoginName(params);
+        List<Map<String,Object>> list = new ArrayList<>();
+        for(HxMenu hxMenu:hxMenus){
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",hxMenu.getId());
+            map.put("name",hxMenu.getName()==null?"":hxMenu.getName());
+            map.put("url",hxMenu.getUrl()==null?"":hxMenu.getUrl());
+            map.put("type",hxMenu.getType()==null?"":hxMenu.getType());
+            map.put("pid",hxMenu.getParentId()==null?"":hxMenu.getParentId());
+            map.put("icon",hxMenu.getIcon()==null?"":hxMenu.getIcon());
+            map.put("orderNum",hxMenu.getOrderNum()==null?"":hxMenu.getOrderNum());
+            map.put("createBy",hxMenu.getCreateBy()==null?"":hxMenu.getCreateBy());
+            map.put("createTime",hxMenu.getCreateTime()==null?"":hxMenu.getCreateTime());
+            list.add(map);
+        }
+
+        TreeUtil util = new TreeUtil();
+        return util.treeNodeList(list);
+    }
+
     @Override
     public void saveOrUpdateMenu(Map<String,Object> params){
         hxMenuMapper.saveOrUpdateMenu(params);

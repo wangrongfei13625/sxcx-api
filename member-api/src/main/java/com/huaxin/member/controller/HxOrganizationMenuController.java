@@ -1,8 +1,9 @@
 package com.huaxin.member.controller;
 
-
-import com.github.pagehelper.PageInfo;
-import com.huaxin.member.service.HxMenuService;
+import com.huaxin.member.model.HxOrganizationMenu;
+import com.huaxin.member.model.HxRoleMenu;
+import com.huaxin.member.service.HxOrganizationMenuService;
+import com.huaxin.member.service.HxRoleMenuService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -17,16 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/hxMenu")
-public class HxMenuController {
+@RequestMapping("/hxOrganizationMenu")
+public class HxOrganizationMenuController {
+
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    private HxMenuService hxMenuService;
+    private HxOrganizationMenuService hxOrganizationMenuService;
+
 
     /**
-     * 查询页面信息
+     * 查询人员组织结构权限
      * @param params
      * @return
      */
@@ -35,37 +38,7 @@ public class HxMenuController {
 
         Result result = new Result();
         try{
-            PageInfo list = hxMenuService.findList(params);
-            result.setData(list);
-        }catch (Exception e){
-            logger.error(e);
-            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            result.setMsg(e.getMessage());
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/findTree", method = RequestMethod.POST)
-    public Result findTree(@RequestBody Map<String, Object> params){
-
-        Result result = new Result();
-        try{
-            List<Map<String,Object>> list = hxMenuService.findTree(params);
-            result.setData(list);
-        }catch (Exception e){
-            logger.error(e);
-            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            result.setMsg(e.getMessage());
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/findTreeOfLoginName", method = RequestMethod.POST)
-    public Result findTreeOfLoginName(@RequestBody Map<String, Object> params){
-
-        Result result = new Result();
-        try{
-            List<Map<String,Object>> list = hxMenuService.findTreeOfLoginName(params);
+            List<HxOrganizationMenu> list = hxOrganizationMenuService.findList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -77,7 +50,27 @@ public class HxMenuController {
 
 
     /**
-     * 新增/更新页面信息
+     * 修改人员组织结构权限
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/saveOrganizationMenu", method = RequestMethod.POST)
+    public Result saveOrganizationMenu(@RequestBody List<HxOrganizationMenu> params){
+
+        Result result = new Result();
+        try{
+            hxOrganizationMenuService.saveOrganizationMenu(params);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 新增/更新人员组织结构权限
      * @param params
      * @return
      */
@@ -86,7 +79,7 @@ public class HxMenuController {
 
         Result result = new Result();
         try{
-            hxMenuService.saveOrUpdateMenu(params);
+            hxOrganizationMenuService.saveOrUpdateMenu(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -97,7 +90,7 @@ public class HxMenuController {
 
 
     /**
-     * 删除页面信息
+     * 删除人员组织结构权限
      * @param params
      * @return
      */
@@ -106,7 +99,7 @@ public class HxMenuController {
 
         Result result = new Result();
         try{
-            hxMenuService.deleteMenu(params);
+            hxOrganizationMenuService.deleteMenu(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -114,8 +107,6 @@ public class HxMenuController {
         }
         return result;
     }
-
-
 
 
 }

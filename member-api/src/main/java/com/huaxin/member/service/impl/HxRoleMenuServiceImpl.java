@@ -4,7 +4,10 @@ package com.huaxin.member.service.impl;
 import com.github.pagehelper.PageInfo;
 import com.huaxin.member.mapper.HxRoleMenuMapper;
 
+import com.huaxin.member.mapper.HxUserRoleMapper;
+import com.huaxin.member.model.HxOrganization;
 import com.huaxin.member.model.HxRoleMenu;
+import com.huaxin.member.model.HxUserRole;
 import com.huaxin.member.service.HxRoleMenuService;
 import com.huaxin.member.util.PageUtils;
 import com.huaxin.member.util.TreeUtil;
@@ -24,15 +27,21 @@ public class HxRoleMenuServiceImpl implements HxRoleMenuService {
     @Autowired
     private HxRoleMenuMapper hxRoleMenuMapper;
 
+    @Autowired
+    private HxUserRoleMapper hxUserRoleMapper;
+
 
     @Override
     public List<HxRoleMenu> findList(Map<String,Object> params){
         //PageUtils.initPage(params);
+
+        //根据UserId 查询得到 roleId  在根据roleId 得到 绑定菜单
+        /*List<HxUserRole> userList = hxUserRoleMapper.findList(params);
+        params.put("roleId",userList.get(0).getRoleId());*/
         List<HxRoleMenu> list = hxRoleMenuMapper.findList(params);
 
         return list;
     }
-
 
 
     @Override

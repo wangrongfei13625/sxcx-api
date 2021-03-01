@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.huaxin.member.mapper.HxOrganizationMenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxOrganizationMenu">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="organization_id" property="organizationId" jdbcType="INTEGER" />
+        <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="INTEGER" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+        <result column="create_by" property="createBy" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+
+    </resultMap>
+
+
+    <select id="findList" parameterType="map" resultMap="BaseResultMap">
+        select
+        om.id, om.organization_id,o.organization_name, om.user_id ,u.user_name , u.login_name,
+        om.create_by, om.create_time
+        from hx_organization_menu om
+
+        left join hx_organization o on om.organization_id=o.id
+
+        left join hx_user u on om.user_id=u.id
+
+        where 1=1
+
+        <if test="userId!=null and userId!=''">
+            and om.user_id= #{userId}
+        </if>
+
+        <if test="organizationId!=null and organizationId!=''">
+            and om.organization_id= #{organizationId}
+        </if>
+
+
+        order by om.create_time
+
+    </select>
+
+
+    <insert id="saveOrUpdateMenu" parameterType="map">
+        replace into hx_organization_menu(
+        id,
+        organization_id,
+        user_id,
+        create_by
+        )
+        values (
+        #{id},
+        #{organizationId},
+        #{userId},
+        #{createBy}
+        );
+    </insert>
+
+    <insert id="saveOrganizationMenu" parameterType="java.util.List">
+        insert into hx_organization_menu
+        (
+            id,
+            organization_id,
+            user_id,
+            create_by
+        )
+        values
+        <foreach collection="list" item="hxOrganizationMenu" index="index" separator=",">
+            (
+                #{hxOrganizationMenu.id},
+                #{hxOrganizationMenu.organizationId},
+                #{hxOrganizationMenu.userId},
+                #{hxOrganizationMenu.createBy}
+            )
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteMenu" parameterType="map">
+        delete from  hx_organization_menu  where 1=1
+        <if test="ids!='' and ids!=null">
+            and id  in
+            <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </delete>
+
+
+    <delete id="deleteOrganizationMenuOfId" parameterType="java.lang.String">
+        delete from  hx_organization_menu  where user_id= #{userId}
+    </delete>
+
+</mapper>

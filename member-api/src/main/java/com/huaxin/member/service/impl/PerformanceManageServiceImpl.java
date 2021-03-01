@@ -31,6 +31,12 @@ public class PerformanceManageServiceImpl implements PerformanceManageService {
     }
 
     @Override
+    public void updateRelease(Map<String,Object> params){
+        performanceManageMapper.updateRelease(params);
+    }
+
+
+    @Override
     public void deleteInfo(Map<String,Object> params){
         if(params.get("ids")!=null && params.get("ids")!=""){
             String ids =params.get("ids").toString();

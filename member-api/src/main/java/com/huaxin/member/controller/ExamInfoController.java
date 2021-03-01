@@ -1,8 +1,8 @@
 package com.huaxin.member.controller;
 
-
 import com.github.pagehelper.PageInfo;
-import com.huaxin.member.service.HxMenuService;
+import com.huaxin.member.model.ExamInfo;
+import com.huaxin.member.service.ExamInfoService;
 import com.huaxin.member.util.base.Result;
 import com.huaxin.member.util.base.ResultCode;
 import org.apache.logging.log4j.LogManager;
@@ -16,56 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 数据采集
+ */
 @RestController
-@RequestMapping("/hxMenu")
-public class HxMenuController {
+@RequestMapping("/examInfo")
+public class ExamInfoController {
 
     private Logger logger = LogManager.getLogger(this.getClass());
 
     @Autowired
-    private HxMenuService hxMenuService;
+    private ExamInfoService examInfoService;
+
 
     /**
-     * 查询页面信息
+     * 查询题目
      * @param params
      * @return
      */
     @RequestMapping(value = "/findList", method = RequestMethod.POST)
     public Result findList(@RequestBody Map<String, Object> params){
-
         Result result = new Result();
         try{
-            PageInfo list = hxMenuService.findList(params);
-            result.setData(list);
-        }catch (Exception e){
-            logger.error(e);
-            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            result.setMsg(e.getMessage());
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/findTree", method = RequestMethod.POST)
-    public Result findTree(@RequestBody Map<String, Object> params){
-
-        Result result = new Result();
-        try{
-            List<Map<String,Object>> list = hxMenuService.findTree(params);
-            result.setData(list);
-        }catch (Exception e){
-            logger.error(e);
-            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
-            result.setMsg(e.getMessage());
-        }
-        return result;
-    }
-
-    @RequestMapping(value = "/findTreeOfLoginName", method = RequestMethod.POST)
-    public Result findTreeOfLoginName(@RequestBody Map<String, Object> params){
-
-        Result result = new Result();
-        try{
-            List<Map<String,Object>> list = hxMenuService.findTreeOfLoginName(params);
+            List<Map<String,Object>> list = examInfoService.findList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);
@@ -77,16 +50,16 @@ public class HxMenuController {
 
 
     /**
-     * 新增/更新页面信息
+     * 提交
      * @param params
      * @return
      */
-    @RequestMapping(value = "/saveOrUpdateMenu", method = RequestMethod.POST)
-    public Result saveOrUpdateMenu(@RequestBody Map<String, Object> params){
+    @RequestMapping(value = "/saveExamInfo", method = RequestMethod.POST)
+    public Result saveExamInfo(@RequestBody List<ExamInfo> params){
 
         Result result = new Result();
         try{
-            hxMenuService.saveOrUpdateMenu(params);
+            examInfoService.saveExamInfo(params);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
@@ -97,16 +70,36 @@ public class HxMenuController {
 
 
     /**
-     * 删除页面信息
+     * 确认
      * @param params
      * @return
      */
-    @RequestMapping(value = "/deleteMenu", method = RequestMethod.POST)
-    public Result deleteMenu(@RequestBody Map<String, Object> params){
+    @RequestMapping(value = "/saveOrUpdateExamInfo", method = RequestMethod.POST)
+    public Result saveOrUpdateExamInfo(@RequestBody List<ExamInfo> params){
 
         Result result = new Result();
         try{
-            hxMenuService.deleteMenu(params);
+            examInfoService.saveOrUpdateExamInfo(params);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 计算得出分数
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/countExam", method = RequestMethod.POST)
+    public Result countExam(@RequestBody Map<String, Object> params){
+        Result result = new Result();
+        try{
+            List<Map<String,Object>> list = examInfoService.countExam(params);
+            result.setData(list);
         }catch (Exception e){
             logger.error(e);
             result.setCode(ResultCode.INTERNAL_SERVER_ERROR);

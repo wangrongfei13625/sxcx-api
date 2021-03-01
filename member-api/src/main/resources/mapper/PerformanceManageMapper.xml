@@ -8,7 +8,7 @@
             o.organization_name as organizationName,
             p.question_type as manageId,p.service_weight as serviceWeight,p.run_weight as runWeight,
             p.assets_weight as assetsWeight,p.finance_weight as financeWeight,p.person_weight as personWeight,
-            p.create_time as createTime
+            p.create_time as createTime,p.is_release as isRelease
         from performance_manage p
 
         left join hx_organization o on p.organization_id = o.id
@@ -17,6 +17,10 @@
 
         <if test="planName!=null and planName!=''">
             and p.plan_name  like concat('%',#{planName},'%')
+        </if>
+
+        <if test="isRelease!=null and isRelease!=''">
+            and p.is_release  =#{isRelease}
         </if>
 
         order by p.create_time desc
@@ -51,6 +55,10 @@
 
         );
     </insert>
+
+    <update id="updateRelease" parameterType="map">
+        update performance_manage set is_release=1 where id = #{id}
+    </update>
 
     <update id="deleteInfo" parameterType="map">
         update performance_manage set is_delete=1

@@ -9,6 +9,9 @@ public interface HxMenuMapper {
 
     List<HxMenu> findList(Map<String, Object> params);
 
+    List<HxMenu> findTreeOfLoginName(Map<String, Object> params);
+
+
     void saveOrUpdateMenu(Map<String, Object> params);
 
     void deleteMenu(Map<String, Object> params);

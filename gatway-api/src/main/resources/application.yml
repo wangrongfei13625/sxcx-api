@@ -30,7 +30,7 @@ zuul:
       path: /member/**
       serviceId: member-api
       sensitiveHeaders: "*"
-    #session±£³ÖÒ»ÖÂ
+    #session
     intelligentsia-authority:
       sensitiveHeaders: Authorization
   max:
@@ -39,6 +39,7 @@ zuul:
   host:
     socket-timeout-millis: 60000
     connect-timeout-millis: 60000
+  servlet-path: /   #zuul ç½‘å…³ä¸Šä¼ æ–‡ä»¶  é»˜è®¤ä¸º /zuul
 
 hystrix:
   command:
@@ -47,7 +48,7 @@ hystrix:
         isolation:
           thread:
             timeoutInMilliseconds: 60000
-#ribbonµÄ³¬Ê±Ê±¼ä
+#ribbon
 ribbon:
   eureka:
     enabled: false

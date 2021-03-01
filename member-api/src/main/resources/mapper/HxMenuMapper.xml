@@ -30,6 +30,35 @@
     </select>
 
 
+    <select id="findTreeOfLoginName" parameterType="map" resultMap="BaseResultMap">
+        select
+
+        DISTINCT m.id, m.name , m.parent_id, m.url,m.type,m.icon,m.order_num,m.create_by,m.create_time
+
+        from hx_menu m
+        left join hx_role_menu rm on rm.menu_id = m.id
+        left join hx_role r on r.id = rm.role_id
+        left join hx_user_role ur on ur.role_id = r.id
+        left join hx_user u on ur.user_id = u.id
+
+        where u.is_delete <![CDATA[ <> ]]> 1
+
+        <if test="loginName !=null and loginName!=''">
+            and u.login_name = #{loginName}
+        </if>
+
+        <if test="userId !=null and userId!=''">
+            and u.id = #{userId}
+        </if>
+
+
+        order by order_num
+
+    </select>
+
+
+
+
     <insert id="saveOrUpdateMenu" parameterType="map">
         replace into hx_menu(
         id,

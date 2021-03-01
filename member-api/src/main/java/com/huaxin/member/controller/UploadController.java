@@ -77,8 +77,9 @@ public class UploadController {
             String classPath = new File(FileManager.class.getResource("/").getFile()).getCanonicalPath();
             String fdfsClientConfigFilePath = conf;
             FastDFSClient client = new FastDFSClient(fdfsClientConfigFilePath);
-            String uploadUrl = client.uploadFile(file.getBytes(), type.substring(1, type.length()));
-            map.put("picName", uploadIp + "/" + uploadUrl.substring(11, uploadUrl.length()));
+            String uploadUrl = client.uploadFile(file.getBytes(), type.substring(1, type.length()));//kseg/M00/00/03/wKgAHmA3aHiAUgskAABXVsng40I920.jpg
+            map.put("path",uploadUrl);
+            map.put("picName", uploadIp  + uploadUrl);
             if(".avi".equals(type) || ".mp4".equals(type) || ".mkv".equals(type) || ".rmvb".equals(type) || ".kux".equals(type)){
                 map.put("status", 0);
             }else{

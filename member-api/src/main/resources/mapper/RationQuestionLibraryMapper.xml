@@ -7,9 +7,15 @@
     <select id="findList" parameterType="map" resultType="map">
         select
         q.id, q.title,
-        q.manage_type as manageId,
-        q.confidence_level as confidenceLevel,q.edition
+        q.manage_id as manageId,m.manage_name as manageName,
+
+        q.ration_type as rationType,mt.manage_name as rationManageName,q.ration_remark as rationRemark,q.edition,
+        q.ration_data as rationData,q.ration_code as rationCode
         from ration_question_library q
+
+        left join manage_type_info m on q.manage_id= m.id
+
+        left join manage_type_info mt on q.ration_type= mt.id
 
         where q.is_delete <![CDATA[ <> ]]> 1
 
@@ -18,10 +24,23 @@
         </if>
 
         <if test="manageIds!=null and manageIds!=''">
-            and q.manage_type in
+            and q.manage_id in
             <foreach collection="manageIds" item="manageId" index="index" open="(" close=")" separator=",">
                 #{manageId}
             </foreach>
+        </if>
+
+        <if test="manageId!=null and manageId!=''">
+            and q.manage_id = #{manage_id}
+        </if>
+
+        <if test="rationType!=null and rationType!=''">
+            and q.ration_type = #{rationType}
+        </if>
+
+
+        <if test="id!=null and id!=''">
+            and q.id = #{id}
         </if>
 
 
@@ -34,15 +53,21 @@
         replace into ration_question_library(
             id,
             title,
-            manage_type,
-            confidence_level,
+            manage_id,
+            ration_type,
+            ration_remark,
+            ration_data,
+            ration_code,
             edition
         )
         values (
         #{id},
         #{title},
         #{manageId},
-        #{confidenceLevel},
+        #{rationType},
+        #{rationRemark},
+        #{rationData},
+        #{rationCode},
         #{edition}
 
         );
@@ -52,15 +77,21 @@
         insert into ration_question_library(
             id,
             title,
-            manage_type,
-            confidence_level,
+            manage_id,
+            ration_type,
+            ration_remark,
+            ration_data,
+            ration_code,
             edition
         )
         values (
             #{id},
             #{title},
             #{manageId},
-            #{confidenceLevel},
+            #{rationType},
+            #{rationRemark},
+            #{rationData},
+            #{rationCode},
             #{edition}
 
         );

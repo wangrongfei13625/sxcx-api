@@ -4,12 +4,22 @@
 
     <select id="findList" parameterType="map" resultType="map">
         select
-          id, manage_name as manageName,manage_type manageType,parent_id as pid
+          id, manage_name as manageName,manage_detail manageDetail,
+          manage_range as manageRange,
+          remark,manage_type manageType,parent_id as pid
         from manage_type_info
         where is_delete <![CDATA[ <> ]]> 1
 
         <if test="manageType!=null and manageType!=''">
             and manage_type=#{manageType}
+        </if>
+
+        <if test="rationCode!=null and rationCode!=''">
+            and manage_name=#{rationCode}
+        </if>
+
+        <if test="id!=null and id!=''">
+            and id=#{id}
         </if>
 
         order by create_time desc
@@ -20,13 +30,20 @@
         replace into manage_type_info(
         id,
         manage_name,
+        manage_detail,
         manage_type,
+        manage_range,
+        remark,
+
         parent_id
         )
         values (
         #{id},
         #{manageName},
+        #{manageDetail},
         #{manageType},
+        #{manageRange},
+        #{remark},
         #{pid}
 
 

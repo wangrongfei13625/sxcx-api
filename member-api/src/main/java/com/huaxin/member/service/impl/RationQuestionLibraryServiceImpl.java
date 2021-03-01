@@ -1,13 +1,12 @@
 package com.huaxin.member.service.impl;
 
 import com.github.pagehelper.PageInfo;
-import com.huaxin.member.mapper.RationAnswerInfoMapper;
+import com.huaxin.member.mapper.RationConfidenceInfoMapper;
 import com.huaxin.member.mapper.RationQuestionLibraryMapper;
-import com.huaxin.member.model.RationAnswerInfo;
+import com.huaxin.member.model.RationConfidenceInfo;
 import com.huaxin.member.model.RationQuestionLibrary;
 import com.huaxin.member.service.RationQuestionLibraryService;
 import com.huaxin.member.util.PageUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,7 +23,7 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
     private RationQuestionLibraryMapper rationQuestionLibraryMapper;
 
     @Autowired
-    private RationAnswerInfoMapper rationAnswerInfoMapper;
+    private RationConfidenceInfoMapper rationAnswerInfoMapper;
 
 
     @Override
@@ -34,7 +33,7 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
         for(Map<String,Object> map:list){
             String rationId = map.get("id").toString();
             List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
-            map.put("answer",answer);
+            map.put("confidence",answer);
 
         }
 
@@ -52,7 +51,7 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
         for(Map<String,Object> map:list){
             String rationId = map.get("id").toString();
             List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
-            map.put("answer",answer);
+            map.put("confidence",answer);
 
         }
 
@@ -66,21 +65,24 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
 
         ration.setTitle(params.get("title").toString());
         ration.setManageId(params.get("manageId").toString());
-        ration.setConfidenceLevel(params.get("confidenceLevel").toString());
+        ration.setRationType(params.get("rationType").toString());
+        ration.setRationRemark(params.get("rationRemark").toString());
+        ration.setRationData(params.get("rationData").toString());
+        ration.setRationCode(params.get("rationCode").toString());
         ration.setEdition(params.get("edition").toString());
         rationQuestionLibraryMapper.saveRation(ration);
 
-        List<Map<String,Object>> list = (List<Map<String, Object>>) params.get("answer");
+        List<Map<String,Object>> list = (List<Map<String, Object>>) params.get("confidence");
 
-        List<RationAnswerInfo> infoList = new ArrayList<>();
+        List<RationConfidenceInfo> infoList = new ArrayList<>();
 
         for(Map<String,Object> map : list){
 
-            RationAnswerInfo rationAnswerInfo = new RationAnswerInfo();
-            rationAnswerInfo.setAnswer(map.get("answer").toString());
-            rationAnswerInfo.setRemark(map.get("remark").toString());
-            rationAnswerInfo.setRationId(ration.getId());
-            infoList.add(rationAnswerInfo);
+            RationConfidenceInfo rationConfidenceInfo = new RationConfidenceInfo();
+            rationConfidenceInfo.setTitle(map.get("title").toString());
+            rationConfidenceInfo.setFraction(map.get("fraction").toString());
+            rationConfidenceInfo.setRationId(ration.getId());
+            infoList.add(rationConfidenceInfo);
 
         }
         rationAnswerInfoMapper.saveAnswer(infoList);
@@ -111,22 +113,26 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
             List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
             //更改版本号，将数据存入ration,将ID 改为null 进行重新存入
             RationQuestionLibrary ration = new RationQuestionLibrary();
-            ration.setTitle(map.get("title").toString());
-            ration.setManageId(map.get("manageId").toString());
-            ration.setConfidenceLevel(map.get("confidenceLevel").toString());
-            ration.setEdition(params.get("updateEdition").toString());
+            ration.setTitle(params.get("title").toString());
+            ration.setManageId(params.get("manageId").toString());
+            ration.setRationType(params.get("rationType").toString());
+            ration.setRationRemark(params.get("rationRemark").toString());
+            ration.setRationData(params.get("rationData").toString());
+            ration.setRationCode(params.get("rationCode").toString());
+            ration.setEdition(params.get("edition").toString());
             rationQuestionLibraryMapper.saveRation(ration);
 
+
             // 将答案复制
-            List<RationAnswerInfo> infoList = new ArrayList<>();
+            List<RationConfidenceInfo> infoList = new ArrayList<>();
 
             for(Map<String,Object> maps : answer){
 
-                RationAnswerInfo rationAnswerInfo = new RationAnswerInfo();
-                rationAnswerInfo.setAnswer(maps.get("answer").toString());
-                rationAnswerInfo.setRemark(maps.get("remark").toString());
-                rationAnswerInfo.setRationId(ration.getId());
-                infoList.add(rationAnswerInfo);
+                RationConfidenceInfo rationConfidenceInfo = new RationConfidenceInfo();
+                rationConfidenceInfo.setTitle(map.get("title").toString());
+                rationConfidenceInfo.setFraction(map.get("fraction").toString());
+                rationConfidenceInfo.setRationId(ration.getId());
+                infoList.add(rationConfidenceInfo);
 
             }
             rationAnswerInfoMapper.saveAnswer(infoList);

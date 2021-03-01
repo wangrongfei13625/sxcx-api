@@ -113,6 +113,25 @@ public class PerformanceManageController {
         return result;
     }
 
+    /**
+     * 发布
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/updateRelease", method = RequestMethod.POST)
+    public Result updateRelease(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            performanceManageService.updateRelease(params);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
 
     /**
      * 删除绩效管理

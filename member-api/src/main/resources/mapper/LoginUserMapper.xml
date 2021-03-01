@@ -22,11 +22,20 @@
 		phone, address,id_card,image
 	</sql>
 
-    <select id="findNotOfRoleId" resultType="map" parameterType="java.lang.String">
+    <select id="findNotOfRoleId" resultType="map" parameterType="map">
         select
           id,login_name,user_name
         from hx_user
-        where id not in (select user_id from hx_user_role where role_id =#{roleId})
+        where id not in (select user_id from hx_user_role where
+        1=1
+        <if test="roleId!=null and roleId!=''">
+             and role_id =#{roleId}
+        </if>
+
+        <if test="userName!=null and userName!=''">
+            and user_name like concat('%',#{userName},'%')
+        </if>
+       )
 
     </select>
 
@@ -43,8 +52,16 @@
         select
         <include refid="Base_Column_List" />
         from hx_user
-        where login_name = #{login_name,jdbcType=VARCHAR} and login_password =
-        #{login_passwd,jdbcType=VARCHAR}
+        where 1=1
+
+         <if test="login_name!=null and login_name!=''">
+             and login_name = #{login_name,jdbcType=VARCHAR}
+         </if>
+
+        <if test="login_passwd!=null and login_passwd!=''">
+            and login_password =#{login_passwd,jdbcType=VARCHAR}
+        </if>
+
     </select>
 
 
@@ -67,6 +84,33 @@
 
         order by create_time
     </select>
+
+
+    <insert id="saveHxUser" parameterType="map">
+        insert into hx_user(
+            id,
+            login_name,
+            login_password,
+            user_name,
+            image,
+            address,
+            sex,
+            phone,
+            id_card
+
+        ) values (
+            #{id},
+            #{loginName},
+            #{loginPassword},
+            #{userName},
+            #{image},
+            #{address},
+            #{sex},
+            #{phone},
+            #{idCard}
+
+        )
+    </insert>
 
     <update id="updateUser" parameterType="map">
         update hx_user set
