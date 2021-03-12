@@ -54,7 +54,7 @@ public class HxMenuServiceImpl implements HxMenuService {
 
     @Override
     public  List<Map<String,Object>> findTreeOfLoginName(Map<String,Object> params){
-        PageUtils.initPage(params);
+        //PageUtils.initPage(params);
         List<HxMenu> hxMenus = hxMenuMapper.findTreeOfLoginName(params);
         List<Map<String,Object>> list = new ArrayList<>();
         for(HxMenu hxMenu:hxMenus){

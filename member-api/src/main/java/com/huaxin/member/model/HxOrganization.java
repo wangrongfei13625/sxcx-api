@@ -25,6 +25,8 @@ public class HxOrganization implements Serializable {
 
     private Integer parentId;
 
+    private String pidName;
+
     private Date createTime;
 
 
@@ -106,5 +108,13 @@ public class HxOrganization implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPidName() {
+        return pidName;
+    }
+
+    public void setPidName(String pidName) {
+        this.pidName = pidName;
     }
 }

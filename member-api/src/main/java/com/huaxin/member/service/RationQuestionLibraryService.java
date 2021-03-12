@@ -13,6 +13,8 @@ public interface RationQuestionLibraryService {
 
     void deleteLibrary(Map<String,Object> params);
 
+    void deleteOfIds(Map<String,Object> params);
+
     void copyRation(Map<String,Object> params);
 
     List<Map<String,Object>> findQuestion(Map<String,Object> params);

@@ -23,6 +23,10 @@
             and q.edition = #{edition}
         </if>
 
+        <if test="edition==null or edition==''">
+            and q.edition is null
+        </if>
+
         <if test="manageIds!=null and manageIds!=''">
             and q.manage_id in
             <foreach collection="manageIds" item="manageId" index="index" open="(" close=")" separator=",">
@@ -108,6 +112,14 @@
                 #{id}
             </foreach>
         </if>
+    </update>
+
+
+    <update id="deleteOfId" parameterType="map">
+        update ration_question_library set is_delete=1
+
+        where 1=1 id = #{id}
+
     </update>
 
 </mapper>

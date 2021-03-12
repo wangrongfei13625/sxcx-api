@@ -13,6 +13,6 @@ public interface ExamInfoService {
 
     void saveOrUpdateExamInfo(List<ExamInfo> params);
 
-    List<Map<String,Object>> countExam(Map<String,Object> params);
+    Map<String,Object> countExam(Map<String,Object> params);
 
 }

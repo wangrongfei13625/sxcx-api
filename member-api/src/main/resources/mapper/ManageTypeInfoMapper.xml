@@ -18,6 +18,10 @@
             and manage_name=#{rationCode}
         </if>
 
+        <if test="pid!=null and pid!=''">
+            and parent_id=#{pid}
+        </if>
+
         <if test="id!=null and id!=''">
             and id=#{id}
         </if>

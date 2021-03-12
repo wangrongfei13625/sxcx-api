@@ -20,6 +20,10 @@
             and q.edition = #{edition}
         </if>
 
+        <if test="edition==null or edition==''">
+            and q.edition is null
+        </if>
+
         <if test="manageId!=null and manageId!=''">
             and q.manage_type = #{manageId}
         </if>

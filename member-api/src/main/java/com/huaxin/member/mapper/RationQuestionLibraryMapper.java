@@ -13,6 +13,9 @@ public interface RationQuestionLibraryMapper {
 
     void deleteLibrary(Map<String,Object> params);
 
+    void deleteOfId(Map<String,Object> params);
+
+
     void saveRation(RationQuestionLibrary ration);
 
 }

@@ -29,6 +29,9 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
     @Override
     public PageInfo findList(Map<String,Object> params){
         PageUtils.initPage(params);
+        if(params.get("edition")==null){
+            params.put("edition","");
+        }
         List<Map<String,Object>> list = rationQuestionLibraryMapper.findList(params);
         for(Map<String,Object> map:list){
             String rationId = map.get("id").toString();
@@ -99,6 +102,30 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
         rationQuestionLibraryMapper.deleteLibrary(params);
     }
 
+
+    @Override
+    public void deleteOfIds(Map<String,Object> params){
+        //查询得到id
+        if(params.get("manageIds")!=null && params.get("manageIds")!=""){
+            String manageIds =params.get("manageIds").toString();
+            String[] manageId = manageIds.split(",");
+            params.put("manageIds",manageId);
+        }
+        List<Map<String,Object>> list = rationQuestionLibraryMapper.findList(params);
+        for(Map<String,Object> map:list){
+            String rationId = map.get("id").toString();
+            List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
+            for(Map<String,Object> answerMap:answer){
+                rationAnswerInfoMapper.deleteAnswer(answerMap);
+            }
+
+            rationQuestionLibraryMapper.deleteOfId(params);
+        }
+
+
+
+    }
+
     /**
      * 复制版本数据
      */
@@ -106,19 +133,24 @@ public class RationQuestionLibraryServiceImpl implements RationQuestionLibrarySe
     @Transactional(propagation = Propagation.REQUIRED)
     public void copyRation(Map<String,Object> params){
 
-        //根据版本号 查询所有定量题库数据
+        //根据manageId 查询得到题目
+        if(params.get("manageIds")!=null && params.get("manageIds")!=""){
+            String manageIds =params.get("manageIds").toString();
+            String[] manageId = manageIds.split(",");
+            params.put("manageIds",manageId);
+        }
         List<Map<String,Object>> list = rationQuestionLibraryMapper.findList(params);
         for(Map<String,Object> map:list){
             String rationId = map.get("id").toString();
             List<Map<String,Object>> answer = rationAnswerInfoMapper.findList(rationId);
             //更改版本号，将数据存入ration,将ID 改为null 进行重新存入
             RationQuestionLibrary ration = new RationQuestionLibrary();
-            ration.setTitle(params.get("title").toString());
-            ration.setManageId(params.get("manageId").toString());
-            ration.setRationType(params.get("rationType").toString());
-            ration.setRationRemark(params.get("rationRemark").toString());
-            ration.setRationData(params.get("rationData").toString());
-            ration.setRationCode(params.get("rationCode").toString());
+            ration.setTitle(map.get("title").toString());
+            ration.setManageId(map.get("manageId").toString());
+            ration.setRationType(map.get("rationType").toString());
+            ration.setRationRemark(map.get("rationRemark").toString());
+            ration.setRationData(map.get("rationData").toString());
+            ration.setRationCode(map.get("rationCode").toString());
             ration.setEdition(params.get("edition").toString());
             rationQuestionLibraryMapper.saveRation(ration);
 

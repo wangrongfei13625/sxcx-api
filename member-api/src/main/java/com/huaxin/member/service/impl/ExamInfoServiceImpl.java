@@ -60,7 +60,7 @@ public class ExamInfoServiceImpl implements ExamInfoService {
                 confidence.put("confidence",answer);
             }
            return rationQuestion;
-        }else{
+        }else {
             //定性
             List<Map<String,Object>> qualitative = examInfoMapper.findListOfQualitative(params);
             for(Map<String,Object> confidence:qualitative){
@@ -263,7 +263,7 @@ public class ExamInfoServiceImpl implements ExamInfoService {
     }
 
     @Override
-    public List<Map<String,Object>> countExam(Map<String,Object> params){
+    public Map<String,Object> countExam(Map<String,Object> params){
 
         Map<String,Object> map = new HashMap<>();
 
@@ -315,6 +315,9 @@ public class ExamInfoServiceImpl implements ExamInfoService {
         BigDecimal serviceNum_1 = new BigDecimal(list_1.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.3")).setScale(2, RoundingMode.HALF_UP);
         map.put("serviceNum_qualitative",serviceNum_1);
 
+        BigDecimal service_count = serviceNum.add(serviceNum_1).multiply(new BigDecimal("0.2")).setScale(2, RoundingMode.HALF_UP);
+        map.put("service_count",service_count);
+
 
 
         //运行类
@@ -323,17 +326,26 @@ public class ExamInfoServiceImpl implements ExamInfoService {
         BigDecimal runNum_1 = new BigDecimal(list_2.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.3")).setScale(2, RoundingMode.HALF_UP);
         map.put("runNum_qualitative",runNum_1);
 
+        BigDecimal runNum_count = runNum.add(runNum_1).multiply(new BigDecimal("0.45")).setScale(2, RoundingMode.HALF_UP);
+        map.put("runNum_count",runNum_count);
+
         //资源类
         params.put("manageId","3");
         List<Map<String,Object>> list_3 = examScoresInfoMapper.findSumOfUserId(params);
         BigDecimal resourcesNum_1 = new BigDecimal(list_3.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.4")).setScale(2, RoundingMode.HALF_UP);
         map.put("resourcesNum_qualitative",resourcesNum_1);
 
+        BigDecimal resourcesNum_count = resourcesNum.add(resourcesNum_1).multiply(new BigDecimal("0.05")).setScale(2, RoundingMode.HALF_UP);
+        map.put("resourcesNum_count",resourcesNum_count);
+
         //资产类
         params.put("manageId","4");
         List<Map<String,Object>> list_4 = examScoresInfoMapper.findSumOfUserId(params);
         BigDecimal assetsNum_1 = new BigDecimal(list_4.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.4")).setScale(2, RoundingMode.HALF_UP);
         map.put("assetsNum_qualitative",assetsNum_1);
+
+        BigDecimal assetsNum_count = assetsNum.add(assetsNum_1).multiply(new BigDecimal("0.05")).setScale(2, RoundingMode.HALF_UP);
+        map.put("assetsNum_count",assetsNum_count);
 
 
         //人事类
@@ -342,17 +354,24 @@ public class ExamInfoServiceImpl implements ExamInfoService {
         BigDecimal personnelNum_1 = new BigDecimal(list_5.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.3")).setScale(2, RoundingMode.HALF_UP);
         map.put("personnelNum_qualitative",personnelNum_1);
 
+        BigDecimal personnelNum_count = personnelNum.add(personnelNum_1).multiply(new BigDecimal("0.05")).setScale(2, RoundingMode.HALF_UP);
+        map.put("personnelNum_count",personnelNum_count);
+
+
         //财经类
         params.put("manageId","6");
         List<Map<String,Object>> list_6 = examScoresInfoMapper.findSumOfUserId(params);
-        BigDecimal financeNum_1 = new BigDecimal(list6.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.7")).setScale(2, RoundingMode.HALF_UP);
+        BigDecimal financeNum_1 = new BigDecimal(list_6.get(0).get("finalValue").toString()).multiply(new BigDecimal("0.7")).setScale(2, RoundingMode.HALF_UP);
         map.put("financeNum_qualitative",financeNum_1);
 
+        BigDecimal financeNum_count = financeNum.add(financeNum_1).multiply(new BigDecimal("0.2")).setScale(2, RoundingMode.HALF_UP);
+        map.put("financeNum_count",financeNum_count);
 
 
 
 
-        return null;
+
+        return map;
     }
 
     @Override

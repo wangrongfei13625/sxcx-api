@@ -98,7 +98,7 @@ public class ExamInfoController {
     public Result countExam(@RequestBody Map<String, Object> params){
         Result result = new Result();
         try{
-            List<Map<String,Object>> list = examInfoService.countExam(params);
+            Map<String,Object> list = examInfoService.countExam(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);

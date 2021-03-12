@@ -15,6 +15,8 @@ public interface QualitativeQuestionLibraryService {
 
     void deleteLibrary(Map<String,Object> params);
 
+    void deleteOfIds(Map<String,Object> params);
+
     void copyQualitative(Map<String,Object> params);
 
 }

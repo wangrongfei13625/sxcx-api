@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="com.huaxin.member.model.HxOrganization">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="organization_name" property="organizationName" jdbcType="VARCHAR" />
+        <result column="pidName" property="pidName" jdbcType="VARCHAR" />
         <result column="organization_address" property="address" jdbcType="VARCHAR" />
         <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" />
         <result column="remarks" property="remarks" jdbcType="VARCHAR" />
@@ -16,12 +17,13 @@
 
     </resultMap>
     <sql id="Base_Column_List">
-		h.id, h.organization_name, h.tel_phone,h.contacts,h.remarks,h.organization_type, h.organization_num, h.parent_id, h.create_time
+		h.id, h.organization_name,h.organization_address, h.tel_phone,h.contacts,h.remarks,h.organization_type, h.organization_num, h.parent_id, h.create_time
 	</sql>
 
     <select id="findList" parameterType="map" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
+        select DISTINCT
+        <include refid="Base_Column_List" />,
+        (select o.organization_name from hx_organization o where o.id = h.parent_id  ) as  pidName
         from hx_organization h
 
         where h.is_delete <![CDATA[ <> ]]> 1

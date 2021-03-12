@@ -13,4 +13,6 @@ public interface RationConfidenceInfoMapper {
 
     void saveAnswer(List<RationConfidenceInfo> params);
 
+    void deleteAnswer(Map<String,Object> params);
+
 }

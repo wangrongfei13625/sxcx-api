@@ -59,6 +59,10 @@
 
     </insert>
 
+    <delete id="deleteAnswer" parameterType="map">
+        delete from ration_confidence_info where id = #{id}
+    </delete>
+
 
 
 </mapper>

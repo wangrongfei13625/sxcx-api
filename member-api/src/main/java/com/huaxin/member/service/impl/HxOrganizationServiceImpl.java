@@ -38,12 +38,14 @@ public class HxOrganizationServiceImpl implements HxOrganizationService {
             Map<String,Object> map = new HashMap<>();
             map.put("id",hxOrganization.getId());
             map.put("organizationName",hxOrganization.getOrganizationName()==null?"":hxOrganization.getOrganizationName());
+            map.put("address",hxOrganization.getAddress()==null?"":hxOrganization.getAddress());
             map.put("telPhone",hxOrganization.getTelPhone()==null?"":hxOrganization.getTelPhone());
             map.put("remarks",hxOrganization.getRemarks()==null?"":hxOrganization.getRemarks());
             map.put("contacts",hxOrganization.getContacts()==null?"":hxOrganization.getContacts());
             map.put("organizationType",hxOrganization.getOrganizationType()==null?"":hxOrganization.getOrganizationType());
             map.put("organizationNum",hxOrganization.getOrganizationNum()==null?"":hxOrganization.getParentId());
             map.put("pid",hxOrganization.getParentId()==null?"":hxOrganization.getParentId());
+            map.put("pidName",hxOrganization.getPidName()==null?"":hxOrganization.getPidName());
             map.put("createTime",hxOrganization.getCreateTime()==null?"":hxOrganization.getCreateTime());
             list.add(map);
         }
