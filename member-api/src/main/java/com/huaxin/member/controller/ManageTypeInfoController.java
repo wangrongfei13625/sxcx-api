@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,6 +38,27 @@ public class ManageTypeInfoController {
         Result result = new Result();
         try{
             PageInfo list = manageTypeInfoService.findList(params);
+            result.setData(list);
+        }catch (Exception e){
+            logger.error(e);
+            result.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+
+    /**
+     * 不分页查询List
+     * @param params
+     * @return
+     */
+    @RequestMapping(value = "/findNoPageOfList", method = RequestMethod.POST)
+    public Result findNoPageOfList(@RequestBody Map<String, Object> params){
+
+        Result result = new Result();
+        try{
+            List<Map<String,Object>> list = manageTypeInfoService.findNoPageOfList(params);
             result.setData(list);
         }catch (Exception e){
             logger.error(e);

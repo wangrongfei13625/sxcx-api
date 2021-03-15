@@ -27,6 +27,14 @@ public class ManageTypeInfoServiceImpl implements ManageTypeInfoService {
     }
 
     @Override
+    public List<Map<String,Object>> findNoPageOfList(Map<String,Object> params){
+
+        List<Map<String,Object>> list = manageTypeInfoMapper.findList(params);
+
+        return  list;
+    }
+
+    @Override
     public void saveOrUpdateInfo(Map<String,Object> params){
         manageTypeInfoMapper.saveOrUpdateInfo(params);
     }
